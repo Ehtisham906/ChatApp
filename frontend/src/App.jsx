@@ -1,14 +1,10 @@
+import React from 'react'
 
-import React from 'react';
-
-
-function App() {
-
-
+const App = () => {
   return (
-    <>
-      <div><h1>ehasd</h1></div>
-    </>
+    <div className='text-red-600'>
+      App
+    </div>
   )
 }
 
