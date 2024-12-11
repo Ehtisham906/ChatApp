@@ -7,6 +7,7 @@ import { Users } from "lucide-react";
 
 const Sidebar = () => {
     const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
+  
     const { onlineUsers } = useAuthStore();
 
     useEffect(() => {
@@ -40,11 +41,15 @@ const Sidebar = () => {
                             {onlineUsers.includes(user._id) && (
                                 <span className="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full ring-2 ring-zinc-900" />
                             )}
+
+
                         </div>
 
                         {/* user infon- only visible on larger screens */}
                         <div className="hidden lg:block text-left min-w-0">
-                            <div className="font-medium truncate"> {user.fullName}</div>
+                            <div className="font-medium truncate"> {user.fullName} <br />
+                            {user._id}
+                            </div>
                             <div className="text-sm text-zinc-400">
                                 {onlineUsers.includes(user._id) ? "Online" : "Offline"}
                             </div>

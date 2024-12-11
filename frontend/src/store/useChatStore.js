@@ -1,6 +1,7 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 import toast from "react-hot-toast";
-import { axiosInstance } from '../lib/axios';
+import { axiosInstance } from "../lib/axios";
+import { useAuthStore } from "./useAuthStore";
 
 export const useChatStore = create((set, get) => ({
     messages: [],
@@ -8,7 +9,6 @@ export const useChatStore = create((set, get) => ({
     selectedUser: null,
     isUsersLoading: false,
     isMessagesLoading: false,
-
 
     getUsers: async () => {
         set({ isUsersLoading: true });
@@ -33,20 +33,25 @@ export const useChatStore = create((set, get) => ({
             set({ isMessagesLoading: false });
         }
     },
-
     sendMessage: async (messageData) => {
         const { selectedUser, messages } = get();
-        console.log("Selected User:", selectedUser);
-        console.log("Message Data:", messageData);
+        if (!selectedUser) {
+            toast.error("no user selectted")
+            return;
+        }
         try {
             const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, messageData);
-            set({ messages: [...messages, res.data] });
+            set({
+                messages: Array.isArray(messages) ? [...messages, res.data] : [res.data], // Handle if messages is undefined
+            });
+            toast.success("Message sent successfully");
+
         } catch (error) {
-            // console.error(error);
-            // toast.error(error.response?.data?.message || "An unexpected error occurred");
+            console.error("Error sending message:", error);
+            const errorMessage = error.response?.data?.message || "An unexpected error occurred.";
+            toast.error(errorMessage);
         }
     },
 
-
     setSelectedUser: (selectedUser) => set({ selectedUser }),
-}))
+}));
