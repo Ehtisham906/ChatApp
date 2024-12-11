@@ -33,15 +33,20 @@ export const useChatStore = create((set, get) => ({
             set({ isMessagesLoading: false });
         }
     },
+
     sendMessage: async (messageData) => {
         const { selectedUser, messages } = get();
+        console.log("Selected User:", selectedUser);
+        console.log("Message Data:", messageData);
         try {
             const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, messageData);
             set({ messages: [...messages, res.data] });
         } catch (error) {
-            toast.error(error.response.data.message)
+            // console.error(error);
+            // toast.error(error.response?.data?.message || "An unexpected error occurred");
         }
     },
-    
+
+
     setSelectedUser: (selectedUser) => set({ selectedUser }),
 }))

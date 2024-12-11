@@ -1,4 +1,4 @@
-import jwt, { decode } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 
 export const protectRoute = async (req, res, next) => {
@@ -11,7 +11,7 @@ export const protectRoute = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         if (!decoded) {
-            return res.status(401).json({ message: "Unauthorized - Invalid token Provi" })
+            return res.status(401).json({ message: "Unauthorized - Invalid token" })
         }
 
         const user = await User.findById(decoded.userId).select("-password");
@@ -24,7 +24,7 @@ export const protectRoute = async (req, res, next) => {
 
         next();
     } catch (error) {
-        console.log("error in protectRoute middleware: ", error);
-        res.status(500).json({message:"Internal Server Error"});
+        console.log("error in protectRoute middleware: ", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
     }
 }
