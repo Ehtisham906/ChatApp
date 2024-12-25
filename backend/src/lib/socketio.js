@@ -18,7 +18,7 @@ io.on("connection", (socket) => {
     console.log("A user connected", socket.id);
 
     const userId = socket.handshake.query.userId; //get userId from query params
-    if (!userId) userSocketMap[userId] = socket.id;
+    if (userId) userSocketMap[userId] = socket.id;
 
     // update online users
     //
@@ -31,4 +31,4 @@ io.on("connection", (socket) => {
     })
 })
 
-export { io, server, app };
+export { io, app, server };

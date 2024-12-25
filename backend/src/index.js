@@ -1,10 +1,12 @@
 import express from "express"; //web framework for building apis giving routes, middleware
+import cookieParser from "cookie-parser"
+import cors from "cors";
+
+import { connectDB } from "./lib/db.js";
+
 import authRoutes from "./routes/auth.route.js"
 import messageRoutes from "./routes/message.route.js"
 import dotenv from "dotenv"
-import cookieParser from "cookie-parser"
-import cors from "cors";
-import { connectDB } from "./lib/db.js";
 import bodyParser from 'body-parser';
 import { app, server } from "./lib/socketio.js";
 
