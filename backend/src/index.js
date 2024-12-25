@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser"
 import cors from "cors";
 import { connectDB } from "./lib/db.js";
 import bodyParser from 'body-parser';
-import { app,server } from "./lib/socketio.js";
+import { app, server } from "./lib/socketio.js";
 
 dotenv.config();
 
