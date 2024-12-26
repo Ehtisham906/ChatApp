@@ -4,7 +4,8 @@
   "main": "srcindex.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.2",
+    "rtca_real_time_chat_application": "file:..",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
