@@ -8,7 +8,12 @@ import { fromatMeassageTimer } from "../lib/utils";
 
 const ChatContainer = () => {
   const { messages, getMessages, isMessagesLoading, selectedUser, subscribeToMessages, unsubscribeFromMessages } = useChatStore();
-  console.log("selected user id is", selectedUser._id);
+  const { getUnreadMessage } = useChatStore();
+  useEffect(() => {
+    getUnreadMessage(selectedUser._id);
+  }, [selectedUser._id, getUnreadMessage]);
+
+
   const { authUser } = useAuthStore();
 
   const messageEndRef = useRef(null);

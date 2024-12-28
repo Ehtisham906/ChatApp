@@ -34,6 +34,30 @@ export const getMessages = async (req, res) => {
   }
 }
 
+export const unreadMessage = async (req, res) => {
+  try {
+    const { id: userToChatID } = req.params;
+    const myId = req.user._id;
+
+    const messages = await Message.find({
+      senderId: userToChatID,
+      receiverId: myId,
+    })
+
+    const unreadMessage = messages[messages.length - 1];
+    res.status(200).json(unreadMessage);
+
+    const unreadMessageSocketId = getReciverSocketId(myId);
+    if (unreadMessageSocketId) {
+      io.to(unreadMessageSocketId).emit("unreadMessage", unreadMessage);
+    }
+
+  } catch (error) {
+    console.log("Error in newMessageArrived controller:", error.message);
+    res.status(500).json({ error: "Internal Server Error" })
+  }
+}
+
 export const sendMessage = async (req, res) => {
   try {
     const { text, image } = req.body;
@@ -55,9 +79,9 @@ export const sendMessage = async (req, res) => {
     });
 
     await newMessage.save();
-    
+
     const reciverSocketId = getReciverSocketId(receiverId);
-    if(reciverSocketId){
+    if (reciverSocketId) {
       io.to(reciverSocketId).emit("newMessage", newMessage);
     }
 

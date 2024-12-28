@@ -50,6 +50,35 @@ export const useChatStore = create((set, get) => ({
         }
     },
 
+    unreadMessage: async () => {
+
+        try {
+            const res = await axiosInstance.get(`/messages/unread/${selectedUser._id}`);
+            set({ messages: [...get().messages, res.data] });
+            console.log("unreadMessage", res.data);
+        } catch (error) {
+            console.error("Error sending message:", error);
+            const errorMessage = error.response?.data?.message || "An unexpected error occurred.";
+            toast.error(errorMessage);
+        }
+    },
+
+    getUnreadMessage: async () => {
+        const { selectedUser } = get();
+        if (!selectedUser) return;
+
+        const socket = useAuthStore.getState().socket;
+
+        socket.on("unreadMessage", (unreadMessage) => {
+            const isMessageSendFromSelectedUser = unreadMessage.senderId === selectedUser._id;
+            if (!isMessageSendFromSelectedUser) return;
+
+            set({
+                messages: [...get().messages, unreadMessage]
+            });
+        }
+        );
+    },
 
     subscribeToMessages: () => {
         const { selectedUser } = get();
@@ -72,6 +101,6 @@ export const useChatStore = create((set, get) => ({
         const socket = useAuthStore.getState().socket;
         socket.off("newMessage");
     },
-    
+
     setSelectedUser: (selectedUser) => set({ selectedUser }),
 }));
