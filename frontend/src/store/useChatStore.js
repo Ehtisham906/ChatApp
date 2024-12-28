@@ -50,52 +50,33 @@ export const useChatStore = create((set, get) => ({
         }
     },
 
-    unreadMessage: async () => {
-
+    newMessage: async () => {
         try {
-            const res = await axiosInstance.get(`/messages/unread/${selectedUser._id}`);
-            set({ messages: [...get().messages, res.data] });
-            console.log("unreadMessage", res.data);
+            const res = await axiosInstance.get(`/messages`);
+            console.log("new message", res.data);
         } catch (error) {
-            console.error("Error sending message:", error);
-            const errorMessage = error.response?.data?.message || "An unexpected error occurred.";
-            toast.error(errorMessage);
+
         }
     },
 
-    getUnreadMessage: async () => {
-        const { selectedUser } = get();
-        if (!selectedUser) return;
-
-        const socket = useAuthStore.getState().socket;
-
-        socket.on("unreadMessage", (unreadMessage) => {
-            const isMessageSendFromSelectedUser = unreadMessage.senderId === selectedUser._id;
-            if (!isMessageSendFromSelectedUser) return;
-
-            set({
-                messages: [...get().messages, unreadMessage]
-            });
-        }
-        );
-    },
 
     subscribeToMessages: () => {
-        const { selectedUser } = get();
-        if (!selectedUser) return;
-
         const socket = useAuthStore.getState().socket;
 
-
         socket.on("newMessage", (newMessage) => {
-            const isMessageSendFromSelectedUser = newMessage.senderId === selectedUser._id;
-            if (!isMessageSendFromSelectedUser) return;
+            const { selectedUser, messages } = get();
 
-            set({
-                messages: [...get().messages, newMessage]
-            });
+            // Show a toast notification for the new message
+            toast.success(`New message from ${newMessage.senderName.toUpperCase() || "a user"}`);
+
+            // If no user is selected or the sender isn't the selected user, just show the toast
+            if (!selectedUser || newMessage.senderId !== selectedUser._id) return;
+
+            // Update messages if the new message is from the selected user
+            set({ messages: [...messages, newMessage] });
         });
     },
+
 
     unsubscribeFromMessages: () => {
         const socket = useAuthStore.getState().socket;

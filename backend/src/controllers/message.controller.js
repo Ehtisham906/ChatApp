@@ -1,5 +1,5 @@
 import cloudinary from "../lib/cloudinary.js";
-import { getReciverSocketId, io } from "../lib/socketio.js";
+import { getReceiverSocketId, io } from "../lib/socketio.js";
 import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
 
@@ -34,57 +34,39 @@ export const getMessages = async (req, res) => {
   }
 }
 
-export const unreadMessage = async (req, res) => {
-  try {
-    const { id: userToChatID } = req.params;
-    const myId = req.user._id;
-
-    const messages = await Message.find({
-      senderId: userToChatID,
-      receiverId: myId,
-    })
-
-    const unreadMessage = messages[messages.length - 1];
-    res.status(200).json(unreadMessage);
-
-    const unreadMessageSocketId = getReciverSocketId(myId);
-    if (unreadMessageSocketId) {
-      io.to(unreadMessageSocketId).emit("unreadMessage", unreadMessage);
-    }
-
-  } catch (error) {
-    console.log("Error in newMessageArrived controller:", error.message);
-    res.status(500).json({ error: "Internal Server Error" })
-  }
-}
 
 export const sendMessage = async (req, res) => {
   try {
     const { text, image } = req.body;
     const { id: receiverId } = req.params;
     const senderId = req.user._id;
-
+    const fullName = req.user.fullName;
     let imageUrl;
     if (image) {
-      // Upload base64 image to cloudinary
+      // Upload base64 image to Cloudinary
       const uploadResponse = await cloudinary.uploader.upload(image);
       imageUrl = uploadResponse.secure_url;
     }
 
+    const sender = await User.findById(senderId).select("fullName"); // Get sender's name
+    console.log("senders", sender)
     const newMessage = new Message({
       senderId,
       receiverId,
       text,
+      fullName,
       image: imageUrl,
     });
 
     await newMessage.save();
 
-    const reciverSocketId = getReciverSocketId(receiverId);
+    const reciverSocketId = getReceiverSocketId(receiverId);
     if (reciverSocketId) {
-      io.to(reciverSocketId).emit("newMessage", newMessage);
+      io.to(reciverSocketId).emit("newMessage", {
+        ...newMessage.toObject(),
+        senderName: sender.fullName, // Include sender's name
+      });
     }
-
 
     res.status(201).json(newMessage);
   } catch (error) {
