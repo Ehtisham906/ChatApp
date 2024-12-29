@@ -1,123 +1,99 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
 import { useAuthStore } from "./useAuthStore";
 
-export const useChatStore = create((set, get) => ({
-    messages: [],
-    users: [],
-    selectedUser: null,
-    isUsersLoading: false,
-    isMessagesLoading: false,
-    unreadMessages: [],
+export const useChatStore = create(
+    persist(
+        (set, get) => ({
+            messages: [],
+            users: [],
+            selectedUser: null,
+            isUsersLoading: false,
+            isMessagesLoading: false,
+            unreadMessages: [],
 
-    getUsers: async () => {
-        set({ isUsersLoading: true });
-        try {
-            const res = await axiosInstance.get("/messages/users");
-            set({ users: res.data });
-        } catch (error) {
-            toast.error(error.response.data.message);
-        } finally {
-            set({ isUsersLoading: false });
-        }
-    },
+            getUsers: async () => {
+                set({ isUsersLoading: true });
+                try {
+                    const res = await axiosInstance.get("/messages/users");
+                    set({ users: res.data });
+                } catch (error) {
+                    toast.error(error.response.data.message);
+                } finally {
+                    set({ isUsersLoading: false });
+                }
+            },
 
-    getMessages: async (userId) => {
-        set({ isMessagesLoading: true });
-        try {
-            const res = await axiosInstance.get(`/messages/${userId}`);
-            set({ messages: res.data });
-        } catch (error) {
-            toast.error(error.response.data.message);
-        } finally {
-            set({ isMessagesLoading: false });
-        }
-    },
-    sendMessage: async (messageData) => {
-        const { selectedUser, messages } = get();
-        if (!selectedUser) {
-            toast.error("no user selectted")
-            return;
-        }
-        try {
-            const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, messageData);
-            set({ messages: [...messages, res.data] });
+            getMessages: async (userId) => {
+                set({ isMessagesLoading: true });
+                try {
+                    const res = await axiosInstance.get(`/messages/${userId}`);
+                    set({ messages: res.data });
+                } catch (error) {
+                    toast.error(error.response.data.message);
+                } finally {
+                    set({ isMessagesLoading: false });
+                }
+            },
 
-        } catch (error) {
-            console.error("Error sending message:", error);
-            const errorMessage = error.response?.data?.message || "An unexpected error occurred.";
-            toast.error(errorMessage);
-        }
-    },
+            sendMessage: async (messageData) => {
+                const { selectedUser, messages } = get();
+                if (!selectedUser) {
+                    toast.error("No user selected");
+                    return;
+                }
+                try {
+                    const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, messageData);
+                    set({ messages: [...messages, res.data] });
+                } catch (error) {
+                    console.error("Error sending message:", error);
+                    const errorMessage = error.response?.data?.message || "An unexpected error occurred.";
+                    toast.error(errorMessage);
+                }
+            },
 
-    newMessage: async () => {
-        try {
-            const res = await axiosInstance.get(`/messages`);
-            console.log("new message", res.data);
-        } catch (error) {
+            subscribeToMessages: () => {
+                const socket = useAuthStore.getState().socket;
 
-        }
-    },
+                socket.on("newMessage", (newMessage) => {
+                    const { unreadMessages, selectedUser, messages } = get();
+                    if (selectedUser?._id === newMessage.senderId) {
+                        set({ messages: [...messages, newMessage] });
+                    } else { 
+                        set({
+                            unreadMessages: [...unreadMessages, newMessage],
+                        });
+                    }
 
-
-    // subscribeToMessages: () => {
-    //     const socket = useAuthStore.getState().socket;
-
-    //     socket.on("newMessage", (newMessage) => {
-    //         const { selectedUser, messages } = get();
-
-    //         // Show a toast notification for the new message
-    //         toast.success(`New message from ${newMessage.senderName.toUpperCase() || "a user"}`, {
-    //             duration: 8000, // Duration in milliseconds (8 seconds)
-    //         });
-
-    //         // If no user is selected or the sender isn't the selected user, just show the toast
-    //         if (!selectedUser || newMessage.senderId !== selectedUser._id) return;
-
-    //         // Update messages if the new message is from the selected user
-    //         set({ messages: [...messages, newMessage] });
-    //     });
-    // },
-    subscribeToMessages: () => {
-        const socket = useAuthStore.getState().socket;
-
-        socket.on("newMessage", (newMessage) => {
-            const { unreadMessages, selectedUser, messages } = get();
-            if (selectedUser?._id === newMessage.senderId) {
-                set({ messages: [...messages, newMessage] });
-            } else {
-                // Otherwise, add it to unread messages
-                set({
-                    unreadMessages: [...unreadMessages, newMessage],
+                    toast.success(`New message from ${newMessage.senderName.toUpperCase() || "a user"}`, {
+                        duration: 8000, 
+                    });
                 });
-            }
+            },
 
-            toast.success(`New message from ${newMessage.senderName.toUpperCase() || "a user"}`, {
-                duration: 8000, // Duration in milliseconds (8 seconds)
-            });
+            clearUnreadMessages: (userId) => {
+                const { unreadMessages } = get();
+                set({
+                    unreadMessages: unreadMessages.filter((msg) => msg.senderId !== userId),
+                });
+            },
 
+            unsubscribeFromMessages: () => {
+                const socket = useAuthStore.getState().socket;
+                socket.off("newMessage");
+            },
 
-        });
-    },
-
-    clearUnreadMessages: (userId) => {
-        const { unreadMessages } = get();
-        set({
-            unreadMessages: unreadMessages.filter((msg) => msg.senderId !== userId),
-        });
-    },
-
-
-    unsubscribeFromMessages: () => {
-        const socket = useAuthStore.getState().socket;
-        socket.off("newMessage");
-    },
-
-    setSelectedUser: (selectedUser) => {
-        // Clear unread messages for the selected user when selected
-        get().clearUnreadMessages(selectedUser._id);
-        set({ selectedUser });
-    },
-    closeChat: (selectedUser) => set({ selectedUser }),
-}));
+            setSelectedUser: (selectedUser) => { 
+                get().clearUnreadMessages(selectedUser._id);
+                set({ selectedUser });
+            },
+            closeChat: (selectedUser) => set({ selectedUser }),
+        }),
+        {
+            name: "chat-store",  
+            partialize: (state) => ({ unreadMessages: state.unreadMessages }), 
+        }
+    )
+);
