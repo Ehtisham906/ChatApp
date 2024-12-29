@@ -3,6 +3,7 @@ import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 import SidebarSkeleton from "./skeletons/SidebarSkeleton";
 import { Users } from "lucide-react";
+import { fromatMeassageTimer } from "../lib/utils";
 
 const Sidebar = () => {
     const {
@@ -50,16 +51,18 @@ const Sidebar = () => {
                     </span>
 
                 </div>
-                <div>
-                    {unreadMessages.map((msg) => (
-                        <div key={msg._id} className="text-xs ">
-                            You have messages from: {msg.senderName}
-                        </div>
+                <div className="hidden lg:block">
+                    {unreadMessages.length > 0 &&
+                        (
+                            <div className="text-xs ">
+                                You have {unreadMessages.length} {unreadMessages.length > 1 ? "unread messages" : "unread message"}
+                            </div>
 
-                    ))}
+                        )
 
+                    }
                 </div>
-                {/* <span>{`You have ${unreadMessages.length} unread messages`}</span> */}
+
             </div>
 
             <div className="overflow-y-auto w-full py-3">
@@ -76,28 +79,36 @@ const Sidebar = () => {
                             <img
                                 src={user.profilePic || "/avatar.png"}
                                 alt={user.name}
-                                className="size-12 object-cover rounded-full"
+                                className="size-12 object-cover rounded-full "
                             />
                             {onlineUsers.includes(user._id) && (
                                 <span className="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full ring-2 ring-zinc-900" />
                             )}
-                            {/* Display "H" if the user has unread messages */}
-                            {unreadMessages.some((msg) => msg.senderId === user._id) && (
-                                <span className="absolute top-0 left-0 bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1">
-                                    {
-                                        unreadMessages.filter((msg) => msg.senderId === user._id).length
-                                    }
-                                </span>
-                            )}
+
                         </div>
 
                         {/* User info - only visible on larger screens */}
-                        <div className="hidden lg:block text-left min-w-0">
-                            <div className="font-medium truncate">
-                                {user.fullName}
+                        <div className="hidden  lg:flex items-center justify-between text-left w-full">
+                            <div>
+                                <div className="font-medium truncate">
+                                    {user.fullName}
+                                </div>
+                                <div className="text-sm text-zinc-400">
+                                    {onlineUsers.includes(user._id) ? "Online" : "Offline"}
+                                </div>
                             </div>
-                            <div className="text-sm text-zinc-400">
-                                {onlineUsers.includes(user._id) ? "Online" : "Offline"}
+                            <div className="flex flex-col gap-2 items-end">
+                                {unreadMessages.some((msg) => msg.senderId === user._id) && (
+                                    <span className=" bg-green-500 text-white text-xs  font-bold rounded-full px-1 py-[0.5]">
+                                        {unreadMessages.filter((msg) => msg.senderId === user._id).length}
+                                    </span>
+                                )}
+                                {unreadMessages.some((msg) => msg.senderId === user._id) && (
+                                    <span className="  text-white text-[9px] font-bold rounded-full px-2 py-1">
+                                        {fromatMeassageTimer(unreadMessages[unreadMessages.length - 1].createdAt)}
+
+                                    </span>
+                                )}
                             </div>
                         </div>
                     </button>

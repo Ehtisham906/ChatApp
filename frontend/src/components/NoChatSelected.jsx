@@ -1,4 +1,4 @@
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, Podcast } from "lucide-react";
 
 import { useChatStore } from "../store/useChatStore"
 import { useEffect } from "react";
@@ -19,12 +19,12 @@ const NoChatSelected = () => {
             <div className="max-w-md text-center space-y-6">
                 <div className="flex justify-center gap-4 mb-4">
                     <div className="relative">
-                        <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center animate-bounce">
-                            <MessageSquare className="w-8 h-8 text-primary" />
+                        <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center animate-pulse">
+                            <Podcast className="w-8 h-8 text-primary animate-pulse" />
                         </div>
                     </div>
                 </div>
-                <h2 className="text-2xl font-bold">Welcome to Chatty!</h2>
+                <h2 className="text-2xl font-bold  animate-pulse">Welcome to Talkify!</h2>
                 <p className="text-base-content/60">Select a conversation from the sidebar to start chatting</p>
             </div>
         </div>
