@@ -9,6 +9,7 @@ export const useChatStore = create((set, get) => ({
     selectedUser: null,
     isUsersLoading: false,
     isMessagesLoading: false,
+    unreadMessages: [],
 
     getUsers: async () => {
         set({ isUsersLoading: true });
@@ -82,37 +83,31 @@ export const useChatStore = create((set, get) => ({
         const socket = useAuthStore.getState().socket;
 
         socket.on("newMessage", (newMessage) => {
-            const { selectedUser, unreadMessages } = get();
+            const { unreadMessages, selectedUser, messages } = get();
+            if (selectedUser?._id === newMessage.senderId) {
+                set({ messages: [...messages, newMessage] });
+            } else {
+                // Otherwise, add it to unread messages
+                set({
+                    unreadMessages: [...unreadMessages, newMessage],
+                });
+            }
+
             toast.success(`New message from ${newMessage.senderName.toUpperCase() || "a user"}`, {
                 duration: 8000, // Duration in milliseconds (8 seconds)
             });
 
-            // Update the `unreadMessages` state
-            set({
-                unreadMessages: {
-                    ...unreadMessages,
-                    [newMessage.senderId]: true, // Mark this sender as having unread messages
-                },
-            });
-            console.log("new message", newMessage)
-            // If the message is from the selected user, add it to the messages list
-            if (selectedUser?._id === newMessage.senderId) {
-                set({
-                    messages: [...get().messages, newMessage],
-                });
-            }
+
         });
     },
 
     clearUnreadMessages: (userId) => {
         const { unreadMessages } = get();
         set({
-            unreadMessages: {
-                ...unreadMessages,
-                [userId]: false, // Mark this user as read
-            },
+            unreadMessages: unreadMessages.filter((msg) => msg.senderId !== userId),
         });
     },
+
 
     unsubscribeFromMessages: () => {
         const socket = useAuthStore.getState().socket;

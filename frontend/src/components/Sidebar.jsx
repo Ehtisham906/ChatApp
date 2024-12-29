@@ -16,7 +16,7 @@ const Sidebar = () => {
 
     const { onlineUsers } = useAuthStore();
     const [showOnlineOnly, setShowOnlineOnly] = useState(false);
-
+    console.log("typeunreadis", unreadMessages.length)
     useEffect(() => {
         getUsers();
     }, [getUsers]);
@@ -24,12 +24,6 @@ const Sidebar = () => {
     const filteredUsers = showOnlineOnly
         ? users.filter((user) => onlineUsers.includes(user._id))
         : users;
-
-    // Calculate the total unread messages across all users
-    const totalUnreadMessages = Object.values(unreadMessages || {}).reduce(
-        (sum, count) => sum + count,
-        0
-    );
 
     if (isUsersLoading) return <SidebarSkeleton />;
 
@@ -41,7 +35,7 @@ const Sidebar = () => {
                     <span className="font-medium hidden lg:block">Contacts</span>
                 </div>
 
-                <div className="mt-3 hidden lg:flex items-center gap-2">
+                <div className="mt-3 hidden lg:flex flex-col justify-start items-center gap-2">
                     <label className="cursor-pointer flex items-center gap-2">
                         <input
                             type="checkbox"
@@ -54,10 +48,18 @@ const Sidebar = () => {
                     <span className="text-xs text-zinc-500">
                         ({onlineUsers.length - 1} online)
                     </span>
+
                 </div>
-                <div className="p-3 text-sm text-zinc-500">
-                    Total unread messages: {totalUnreadMessages}
+                <div>
+                    {unreadMessages.map((msg) => (
+                        <div key={msg._id} className="text-xs ">
+                            You have messages from: {msg.senderName}
+                        </div>
+
+                    ))}
+
                 </div>
+                {/* <span>{`You have ${unreadMessages.length} unread messages`}</span> */}
             </div>
 
             <div className="overflow-y-auto w-full py-3">
@@ -65,11 +67,10 @@ const Sidebar = () => {
                     <button
                         key={user._id}
                         onClick={() => setSelectedUser(user)}
-                        className={`w-full p-3 flex items-center gap-3 hover:bg-base-300 transform-colors ${
-                            selectedUser?._id === user._id
-                                ? "bg-base-300 ring-1 ring-base-300"
-                                : ""
-                        }`}
+                        className={`w-full p-3 flex items-center gap-3 hover:bg-base-300 transform-colors ${selectedUser?._id === user._id
+                            ? "bg-base-300 ring-1 ring-base-300"
+                            : ""
+                            }`}
                     >
                         <div className="relative mx-auto lg:mx-0">
                             <img
@@ -80,17 +81,21 @@ const Sidebar = () => {
                             {onlineUsers.includes(user._id) && (
                                 <span className="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full ring-2 ring-zinc-900" />
                             )}
-                            {/* Display the unread message count */}
-                            {unreadMessages?.[user._id] > 0 && (
-                                <span className="absolute top-0 left-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                                    {unreadMessages[user._id]}
+                            {/* Display "H" if the user has unread messages */}
+                            {unreadMessages.some((msg) => msg.senderId === user._id) && (
+                                <span className="absolute top-0 left-0 bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1">
+                                    {
+                                        unreadMessages.filter((msg) => msg.senderId === user._id).length
+                                    }
                                 </span>
                             )}
                         </div>
 
                         {/* User info - only visible on larger screens */}
                         <div className="hidden lg:block text-left min-w-0">
-                            <div className="font-medium truncate">{user.fullName}</div>
+                            <div className="font-medium truncate">
+                                {user.fullName}
+                            </div>
                             <div className="text-sm text-zinc-400">
                                 {onlineUsers.includes(user._id) ? "Online" : "Offline"}
                             </div>
