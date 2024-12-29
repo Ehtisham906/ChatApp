@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 const NoChatSelected = () => {
 
-    const {  getMessages, isMessagesLoading, subscribeToMessages, unsubscribeFromMessages } = useChatStore();
+    const {  getMessages, subscribeToMessages, unsubscribeFromMessages } = useChatStore();
 
     useEffect(() => {
         
