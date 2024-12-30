@@ -36,8 +36,8 @@ const Navbar = () => {
             </Link>
 
             <Link
-             to={"/get-started"}
-            className="btn btn-sm gap-2 transition-colors"
+             to={"/login"}
+            className={`btn btn-sm gap-2 transition-colors ${authUser ? "hidden" : ""}`}
             >
 
               <Plane className="size-4" />

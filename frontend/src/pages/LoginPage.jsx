@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import AuthImagePattern from "../components/AuthImagePattern";
+import HeroImage from "../assets/images/hero.png";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail, LucidePodcast } from "lucide-react";
 
@@ -24,8 +25,9 @@ const LoginPage = () => {
         title={"Welcome back!"}
         subtitle={"Sign in to continue your conversations and catch up with your messages."}
       /> */}
-      <div>
 
+      <div className="flex items-center" >
+        <img src={HeroImage} alt="" loading="lazy"/>
       </div>
 
       {/* Right Side - Image/Pattern */}
