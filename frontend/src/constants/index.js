@@ -1,5 +1,5 @@
-export const THEMES = [
-    "light",
-    "dark",
-    "sunset",
-  ];
+// export const THEMES = [
+//     "light",
+//     "dark",
+//     "sunset",
+//   ];

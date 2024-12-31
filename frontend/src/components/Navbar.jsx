@@ -26,14 +26,7 @@ const Navbar = () => {
             </ul>
           </div>
 
-          <div className="flex justify-end gap-2">
-            <Link
-              to={"/settings"}
-              className="btn btn-sm gap-2 transition-colors"
-            >
-              <Settings className="size-4" />
-              <span className="hidden sm:inline">Settings</span>
-            </Link>
+          <div className="flex justify-end gap-2"> 
 
             <Link
              to={"/login"}

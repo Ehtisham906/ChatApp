@@ -3,8 +3,7 @@ import Navbar from "./components/Navbar"
 import { Routes, Route, Navigate } from "react-router-dom"
 import HomePage from "./pages/HomePage"
 import SignUpPage from "./pages/SignUpPage"
-import LoginPage from "./pages/LoginPage"
-import SettingsPage from "./pages/SettingsPage"
+import LoginPage from "./pages/LoginPage" 
 import ProfilePage from "./pages/ProfilePage"
 
 
@@ -12,12 +11,12 @@ import { useAuthStore } from "./store/useAuthStore"
 import { useEffect } from "react"
 import { Loader } from 'lucide-react'
 import { Toaster } from "react-hot-toast"
-import { useThemeStore } from "./store/useThemeStore"
+ 
 import LandingPage from "./pages/LandingPage"
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth, onlineUsers } = useAuthStore();
-  const { theme } = useThemeStore();
+   
 
   console.log({ onlineUsers });
 
@@ -34,7 +33,7 @@ const App = () => {
   )
 
   return (
-    <div data-theme={theme}>
+    <div >
       <Navbar />
 
       <Routes>
@@ -45,8 +44,8 @@ const App = () => {
         <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} /> */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={authUser ? <Navigate to="/homepage" /> : <LoginPage />} />
-        <Route path="/homepage" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
-        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/homepage" element={authUser ? <HomePage /> : <Navigate to="/" />} />
+      
 
 
       </Routes>

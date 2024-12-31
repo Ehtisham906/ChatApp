@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono&display=swap");
+
+@font-face {
+  font-family: 'Apfel';
+  src: url('../assets/fonts/ApfelGrotezk-Regular.BWvmwAfX.woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+ 
+
+/* body {
+  height: 100vh;
+  margin: 0;
+  margin-left: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+.letter-container {
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  font-family: monospace;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.scrambler {
+  font-size: 3vw;
+  font-weight: 400;
+  letter-spacing: -2px;
+  text-decoration: none;
+  /* opacity: 0; Initially hide the text */
+  /* transition: opacity 0.3s ease-in; */
+}
+
+.letter {
+  
+  opacity: 0;
+  /* transform: translateX(30px); */
+  /* transition: transform 0.3s ease, opacity 0.3s ease; */
+}
+
+.letter.visible {
+  /* opacity: 1; */
+  /* transform: translateY(0); */
+}
+
+.active {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
