@@ -2,21 +2,16 @@
 
 @font-face {
   font-family: 'Apfel';
-  src: url('../assets/fonts/ApfelGrotezk-Regular.BWvmwAfX.woff2');
+  src: url('../../assets/fonts/ApfelGrotezk-Regular.BWvmwAfX.woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
+*{
+  font-family: 'Apfel';
+}
  
-
-/* body {
-  height: 100vh;
-  margin: 0;
-  margin-left: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
+ 
 
 .letter-container {
   display: flex;
@@ -28,10 +23,7 @@
   letter-spacing: -0.04em;
 }
 
-.scrambler {
-  font-size: 3vw;
-  font-weight: 400;
-  letter-spacing: -2px;
+.scrambler {   
   text-decoration: none;
   /* opacity: 0; Initially hide the text */
   /* transition: opacity 0.3s ease-in; */
