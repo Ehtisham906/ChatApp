@@ -24,10 +24,13 @@ const LandingPage = () => {
     const isVisible1 = useOnScreen(sectionRef1);
     return (
         <main>
-            <section className='overflow-hidden h-screen'
+            <section className='relative overflow-hidden h-screen'
                 ref={sectionRef0}
             >
-                <div className='  sm:flex justify-around items-center'>
+                <div className='size-[600px] absolute -top-[40%] left-[26%] bg-[radial-gradient(circle,rgb(255,242,97),rgba(255,242,97,0.4),rgba(255,242,97,0))] rounded-full'>
+
+                </div>
+                <div className='  sm:flex justify-around items-center my-20'>
                     <div className='flex justify-center sm:block sm:ml-8 md:ml-4 text-[#262626] sm:w-[35%] relative'>
                         <h1 className='text-4xl lg:text-6xl '>
                             <TextScrambler targetWord={"Get the best "} animationSpeed={80} />
