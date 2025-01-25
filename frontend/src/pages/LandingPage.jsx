@@ -3,8 +3,7 @@ import TextScrambler from '../components/textscrambler/TextScrambler'
 import useOnScreen from '../components/animation/useOnScreen'
 import { Clock, LockKeyhole, LucideRocket, MoveRight, Smile } from 'lucide-react';
 
-// images 
-import lines from '../assets/images/line.png'
+// images  
 import group from '../assets/images/Group.png'
 import group1 from '../assets/images/Group-1.png'
 import group2 from '../assets/images/Group-2.png'
@@ -49,35 +48,7 @@ const LandingPage = () => {
                             </span>
                         </h1>
 
-                        <div className='hidden sm:visible absolute -top-10'>
-                            <img
-                                src={lines}
-                                alt=""
-                                width={100}
-                            />
-
-                        </div>
-                        <div className='hidden sm:visible absolute top-10 right-0'>
-                            <img
-                                src={lines}
-                                alt=""
-                                width={100}
-                            />
-                        </div>
-                        <div className='hidden sm:visible absolute top-16 right-0'>
-                            <img
-                                src={lines}
-                                alt=""
-                                width={100}
-                            />
-                        </div>
-                        <div className='hidden sm:visible absolute -bottom-10 left-20'>
-                            <img
-                                src={lines}
-                                alt=""
-                                width={100}
-                            />
-                        </div>
+                      
                     </div>
 
                     <div className='mx-auto sm:mx-0 w-[60%] sm:w-[35%] grid mt-4 md:mt-0  grid-cols-3 items-center    '>
