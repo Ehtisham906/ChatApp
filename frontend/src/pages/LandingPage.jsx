@@ -23,7 +23,7 @@ const LandingPage = () => {
     const isVisible1 = useOnScreen(sectionRef1);
     return (
         <main>
-            <section className='relative overflow-hidden h-screen'
+            <section className='relative overflow-hidden '
                 ref={sectionRef0}
             >
                 <div className='size-[600px] absolute -top-[40%] left-[26%] bg-[radial-gradient(circle,rgb(255,242,97),rgba(255,242,97,0.4),rgba(255,242,97,0))] rounded-full'>
@@ -48,29 +48,37 @@ const LandingPage = () => {
                             </span>
                         </h1>
 
-                      
+
                     </div>
 
                     <div className='mx-auto sm:mx-0 w-[60%] sm:w-[35%] grid mt-4 md:mt-0  grid-cols-3 items-center    '>
 
                         <div className={`transition-transform duration-[3s] ease-in-out ${isVisible0 ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'}`}>
-                            <img src={group6} alt="" width={200} />
+                            <img src={group6} alt="hero image 1" loading='eager' width={"200px"} height={"200px"} />
                         </div>
 
                         <div className={`transition-transform duration-[2s] ease-in-out ${isVisible0 ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
-                            <img src={group1} alt="" width={200} />
+                            <img src={group1} loading='eager' alt="hero image 2" width={"200px"} height={"200px"} />
                         </div>
                         <div
                             className={`transition-transform duration-[4s] ease-in-out ${isVisible0 ? 'translate-x-[0px] opacity-100' : '-translate-x-full opacity-0'}`}
                         >
-                            <img src={group5} alt="" width={100} />
-                            <img src={group2} alt="" />
+                            <img src={group5} alt="hero image 3" loading='eager' width={"100px"} height={"100px"} />
+                            <img src={group2} alt=" hero image 4" loading='eager' width={"120px"} height={"120px"} />
                         </div>
                         <div></div>
-                        <div className={`transition-transform duration-[3s] ease-in-out ${isVisible0 ? 'translate-x-[0px] opacity-100' : '-translate-x-full opacity-0'}`}><img src={group3} alt="" width={200} /></div>
-                        <div className={`transition-transform duration-[5s] ease-in-out ${isVisible0 ? 'translate-x-[0px] opacity-100' : '-translate-x-full opacity-0'}`}><img src={group} alt="" width={150} /></div>
-                        <div className={`transition-transform duration-[4s] ease-in-out ${isVisible0 ? 'translate-x-[0px] opacity-100' : '-translate-x-full opacity-0'}`}><img src={group7} alt="" width={300} /></div>
-                        <div className={`transition-transform duration-[3s] ease-in-out ${isVisible0 ? 'translate-y-[0px] opacity-100' : 'translate-y-full opacity-0'}`}><img src={group4} alt="" width={300} /></div>
+                        <div className={`transition-transform duration-[3s] ease-in-out ${isVisible0 ? 'translate-x-[0px] opacity-100' : '-translate-x-full opacity-0'}`}>
+                            <img src={group3} alt="hero image 5" loading='eager' width={"200px"} height={"200px"} />
+                        </div>
+                        <div className={`transition-transform duration-[5s] ease-in-out ${isVisible0 ? 'translate-x-[0px] opacity-100' : '-translate-x-full opacity-0'}`}>
+                            <img src={group} alt="hero image 6" loading='eager' width={"150px"} height={"150px"} />
+                        </div>
+                        <div className={`transition-transform duration-[4s] ease-in-out ${isVisible0 ? 'translate-x-[0px] opacity-100' : '-translate-x-full opacity-0'}`}>
+                            <img src={group7} alt="hero image 7" loading='eager' width={"300px"} height={"300px"} />
+                        </div>
+                        <div className={`transition-transform duration-[3s] ease-in-out ${isVisible0 ? 'translate-y-[0px] opacity-100' : 'translate-y-full opacity-0'}`}>
+                            <img src={group4} alt="hero image 8" loading='eager' width={"300px"} height={"300px"} />
+                        </div>
 
 
                     </div>
