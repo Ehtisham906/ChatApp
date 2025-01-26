@@ -4,14 +4,14 @@ import useOnScreen from '../components/animation/useOnScreen'
 import { Clock, LockKeyhole, LucideRocket, MoveRight, Smile } from 'lucide-react';
 
 // images  
-import group from '../assets/images/Group.png'
-import group1 from '../assets/images/Group-1.png'
-import group2 from '../assets/images/Group-2.png'
-import group3 from '../assets/images/Group-3.png'
-import group4 from '../assets/images/Group-4.png'
-import group5 from '../assets/images/Group-5.png'
-import group6 from '../assets/images/Group-6.png'
-import group7 from '../assets/images/Group-7.png'
+import group from '../assets/images/Group.webp'
+import group1 from '../assets/images/Group-1.webp'
+import group2 from '../assets/images/Group-2.webp'
+import group3 from '../assets/images/Group-3.webp'
+import group4 from '../assets/images/Group-4.webp'
+import group5 from '../assets/images/Group-5.webp'
+import group6 from '../assets/images/Group-6.webp'
+import group7 from '../assets/images/Group-7.webp'
 import Companies from '../components/Companies';
 
 
@@ -63,21 +63,21 @@ const LandingPage = () => {
                         <div
                             className={`transition-transform duration-[4s] ease-in-out ${isVisible0 ? 'translate-x-[0px] opacity-100' : '-translate-x-full opacity-0'}`}
                         >
-                            <img src={group5} alt="hero image 3" loading='eager' width={"100px"} height={"100px"} />
-                            <img src={group2} alt=" hero image 4" loading='eager' width={"120px"} height={"120px"} />
+                            <img src={group5} alt="hero image 3" loading='eager' width={"100px"} height={"44px"} />
+                            <img src={group2} alt=" hero image 4" loading='eager' width={"194px"} height={"120px"} />
                         </div>
                         <div></div>
                         <div className={`transition-transform duration-[3s] ease-in-out ${isVisible0 ? 'translate-x-[0px] opacity-100' : '-translate-x-full opacity-0'}`}>
-                            <img src={group3} alt="hero image 5" loading='eager' width={"200px"} height={"200px"} />
+                            <img src={group3} alt="hero image 5" loading='eager' width={"200px"} height={"123"} />
                         </div>
                         <div className={`transition-transform duration-[5s] ease-in-out ${isVisible0 ? 'translate-x-[0px] opacity-100' : '-translate-x-full opacity-0'}`}>
                             <img src={group} alt="hero image 6" loading='eager' width={"150px"} height={"150px"} />
                         </div>
                         <div className={`transition-transform duration-[4s] ease-in-out ${isVisible0 ? 'translate-x-[0px] opacity-100' : '-translate-x-full opacity-0'}`}>
-                            <img src={group7} alt="hero image 7" loading='eager' width={"300px"} height={"300px"} />
+                            <img src={group7} alt="hero image 7" loading='eager' width={"300px"} height={"76px"} />
                         </div>
                         <div className={`transition-transform duration-[3s] ease-in-out ${isVisible0 ? 'translate-y-[0px] opacity-100' : 'translate-y-full opacity-0'}`}>
-                            <img src={group4} alt="hero image 8" loading='eager' width={"300px"} height={"300px"} />
+                            <img src={group4} alt="hero image 8" loading='eager' width={"300px"} height={"124px"} />
                         </div>
 
 
